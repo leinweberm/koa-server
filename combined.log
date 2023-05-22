@@ -1,0 +1,19 @@
+{"level":"info","message":"Server started. Server is listening on port 3000","timestamp":"2023-05-08T13:05:55.481Z"}
+{"level":"info","message":"Sequelize: Connection to database established.","timestamp":"2023-05-08T13:05:56.558Z"}
+{"level":"info","message":"Sequelize: Connection succesfullt authetificated","timestamp":"2023-05-08T13:05:56.596Z"}
+{"level":"info","message":"GET / - 3ms","timestamp":"2023-05-08T13:06:00.615Z"}
+{"level":"info","message":"GET /favicon.ico - 0ms","timestamp":"2023-05-08T13:06:00.764Z"}
+{"level":"info","message":"Server started. Server is listening on port 3000","timestamp":"2023-05-08T13:11:08.449Z"}
+{"level":"info","message":"Sequelize: Connection to database established.","timestamp":"2023-05-08T13:11:09.735Z"}
+{"level":"info","message":"Sequelize: Connection succesfullt authetificated","timestamp":"2023-05-08T13:11:09.772Z"}
+{"level":"info","message":"Server started. Server is listening on port 3000","timestamp":"2023-05-08T13:14:36.677Z"}
+{"level":"info","message":"Sequelize: Connection to database established.","timestamp":"2023-05-08T13:14:37.728Z"}
+{"level":"info","message":"Sequelize: Connection succesfullt authetificated","timestamp":"2023-05-08T13:14:37.767Z"}
+{"level":"info","message":"GET / - 3ms","timestamp":"2023-05-08T13:14:39.916Z"}
+{"level":"info","message":"Server started. Server is listening on port 3000","timestamp":"2023-05-08T13:48:30.992Z"}
+{"level":"info","message":"Sequelize: Connection to database established.","timestamp":"2023-05-08T13:48:32.451Z"}
+{"level":"info","message":"Sequelize: Connection succesfullt authetificated","timestamp":"2023-05-08T13:48:32.488Z"}
+{"level":"info","message":"Server started. Server is listening on port 3000","timestamp":"2023-05-08T14:15:07.291Z"}
+{"level":"info","message":"Sequelize: Connection to database established.","timestamp":"2023-05-08T14:15:08.298Z"}
+{"level":"info","message":"Sequelize: Connection succesfullt authetificated","timestamp":"2023-05-08T14:15:08.336Z"}
+{"level":"info","message":"Server started. Server is listening on port 3000","timestamp":"2023-05-22T14:39:05.310Z"}
