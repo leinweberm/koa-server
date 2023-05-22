@@ -1,8 +1,9 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes } from "sequelize";
 
 import { sequelize } from "../../pgdb.mjs";
 
-export const Customer = sequelize.define('customers',
+export const Customer = sequelize.define(
+	"customers",
 	{
 		customer_uid: {
 			type: DataTypes.UUID,
@@ -46,19 +47,19 @@ export const Customer = sequelize.define('customers',
 		},
 		status: {
 			type: DataTypes.STRING,
-			defaultValue: 'regular',
+			defaultValue: "regular",
 			allowNull: false,
 		},
 		spendings: {
 			type: DataTypes.INTEGER,
 			defaultValue: 0,
 			allowNull: false,
-		}
+		},
 	},
 	{
-		tableName: 'customers',
-		schema: 'rosemary',
-		createdAt: 'created',
+		tableName: "customers",
+		schema: "rosemary",
+		createdAt: "created",
 		updatedAt: false,
-	},
+	}
 );

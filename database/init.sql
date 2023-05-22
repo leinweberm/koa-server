@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS network.users (
 	preferences JSONB DEFAULT NULL
 );
 ALTER TABLE network.users OWNER TO mladmin;
+ALTER TABLE rosemary.customers ADD CONSTRAINT unique_email UNIQUE (email);
 
 -- ==================== ROSEMARY SCHEME ====================
 CREATE SCHEMA IF NOT EXISTS rosemary;
