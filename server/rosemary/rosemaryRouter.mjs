@@ -12,13 +12,15 @@ rosemaryRouter.get("/api/rosemary/test", async (ctx) => {
 rosemaryRouter.post("/api/rosemary/sign-up", async (ctx, next) => {
 	try {
 		const result = await CustomerC.signUp(ctx.request.body);
-		console.log("result", result);
-		ctx.response.status = 201;
-		ctx.body = {
-			status: "ok",
-			data: ctx.request.body,
+		ctx.response.status = result.status;
+		ctx.response.body = {
+			status: result.message,
+			data: result.data,
+			token: result.token,
 		};
 	} catch (error) {
+		ctx.response.status = 500;
+		ctx.response.body = error;
 		logger.error(error);
 	}
 	await next();

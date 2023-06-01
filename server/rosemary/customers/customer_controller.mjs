@@ -1,57 +1,71 @@
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+import { promisify } from "util";
 
 import { Customer as CustomerS } from "./customer_service.mjs";
 import { CustomError } from "../../customError.mjs";
 import { logger } from "../../logger.mjs";
 
+dotenv.config();
+const jwtSecret = process.env.JWT_SECRET;
 const saltRounds = 11;
+const bcryptHash = promisify(bcrypt.hash);
+const jwtVerify = promisify(jwt.verify);
+const jwtSign = promisify(jwt.sign);
 
 export const customer = {
 	signUp: async (params) => {
 		try {
-			console.log("Sign-up params", JSON.stringify(params));
-			let pwdHash;
 			if (!params || !params.email || !params.password) {
 				throw new CustomError("Rosemary", "Missing required credentials");
-			} else {
-				const testHash = await bcrypt.hash(params.password, saltRounds, (err, hash) => {
-					if (err) {
-						throw new CustomError("Rosemary", err);
-					} else {
-						console.log("hash", hash);
-						return hash;
-					}
-				});
+			}
 
-				console.log("testHash", testHash);
-				// if (pwdHash) {
-				// 	params.password = pwdHash;
-				// 	console.log("parsedParams", params);
-				// 	await CustomerS.signUp(params);
-				// }
+			let hashedPassword = await bcryptHash(params.password, saltRounds);
+			if (hashedPassword) {
+				const userParams = params;
+				userParams.password = hashedPassword;
+				userParams.status = "regular";
+
+				const signUpSuccesful = await CustomerS.signUp(userParams);
+
+				if (signUpSuccesful.status === 201) {
+					const token = await jwtSign(
+						{
+							email: signUpSuccesful.email,
+							role: signUpSuccesful.status,
+							expiresIn: "24h",
+						},
+						jwtSecret,
+						{ expiresIn: 24 * (60 * 60) }
+					);
+					console.log("token", token);
+					signUpSuccesful.token = token;
+					return signUpSuccesful;
+				} else {
+					return signUpSuccesful;
+				}
+			} else {
+				throw new CustomError("Rosemary", "Hashing new user password failed");
 			}
 		} catch (error) {
+			logger.error(error);
 			throw new Error(error);
-		} finally {
-			return params;
 		}
 	},
 
 	logIn: async (params) => {
-		logger.info("Customer logIn() params", params);
 		try {
 			if (!params || !params.email || !params.password) {
 				throw new CustomError("Rosemary", "Missing required credentials");
 			}
 		} catch (error) {
+			logger.error(error);
 			throw new Error(error);
-		} finally {
-			return null;
 		}
 	},
 
 	checkUniqueEmail: async (email) => {
-		logger.info("Customer checkUniqueEmail() email", email);
 		try {
 			if (!email) {
 				throw new CustomError("Rosemary", "Email is required field");
