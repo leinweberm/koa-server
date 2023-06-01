@@ -33,16 +33,18 @@ CREATE TABLE IF NOT EXISTS rosemary.paintings (
 );
 ALTER TABLE rosemary.paintings OWNER TO mladmin;
 
--- posts
+-- posts FINISHED
 CREATE TABLE IF NOT EXISTS rosemary.posts (
-	post_uuid UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
-	post_title JSONB DEFAULT '{"en":"", "cs":""}',
-	post_description JSONB DEFAULT '{"en":"", "cs":""}',
+	post_uuid UUID NOT NULL ,
+	created TIMESTAMP WITH TIME ZONE NOT NULL,
+	deleted TIMESTAMP WITH TIME ZONE DEFAULT NULL,
+	post_title JSONB NOT NULL DEFAULT '{"en":"", "cs":""}',
+	photos_description JSONB NOT NULL DEFAULT '{"en":"", "cs":""}',
 	data JSONB DEFAULT NULL,
-	created TIMESTAMP DEFAULT NOW(),
-	deleted TIMESTAMP DEFAULT NULL
+	PRIMARY KEY (post_uuid)
 );
-ALTER TABLE TABLE rosemary.posts OWNER TO mladmin;
+
+ALTER TABLE rosemary.posts OWNER TO mladmin;
 
 -- tattoo
 CREATE TABLE IF NOT EXISTS rosemary.tattoo (
@@ -84,7 +86,7 @@ CREATE TABLE IF NOT EXISTS rosemary.orders (
 ALTER TABLE rosemary.orders OWNER TO mladmin;
 CREATE INDEX idx_rosemary_orders_customer ON rosemary.orders(order_uuid, customer_name);
 
--- users
+-- users FINISHED
 CREATE TABLE IF NOT EXISTS rosemary.customers (
 	customer_uid UUID NOT NULL ,
 	name VARCHAR(255) DEFAULT NULL,

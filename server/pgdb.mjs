@@ -39,7 +39,7 @@ export const initSequelize = async (db_url) => {
 	connectionString = db_url;
 
 	try {
-		await sequelize.sync({ alter: true });
+		await sequelize.sync({ force: true });
 		logger.info("Sequelize: Connection to database established.");
 	} catch (error) {
 		throw new Error("Sequelize:", error);
