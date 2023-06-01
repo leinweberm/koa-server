@@ -1,20 +1,17 @@
 import { Customer as CustomerM } from "./customer_model.mjs";
-import { logger } from "../../logger.mjs";
-import { CustomError } from "../../customError.mjs";
 import { sequelize } from "../../pgdb.mjs";
 
-export const Customer = {
-	login: async (params) => {
+export const customer = {
+	login: async (email) => {
 		try {
-			const userInfo = CustomerM.findOne({
+			const userInfo = await CustomerM.findOne({
 				where: {
-					email: params.email,
+					email: email,
 					deleted: null,
 				},
 			});
 			return userInfo.toJSON();
 		} catch (error) {
-			logger.error(error);
 			throw new Error(error);
 		}
 	},
@@ -29,7 +26,6 @@ export const Customer = {
 			});
 			return count;
 		} catch (error) {
-			logger.error(error);
 			throw new Error(error);
 		}
 	},
@@ -42,14 +38,7 @@ export const Customer = {
 				WHERE deleted IS NULL
 				AND email = '${params.email}'
 			`);
-			console.log("validEmail", validEmail);
-			if (validEmail[0] && validEmail[0][0] && validEmail[0][0] != 0) {
-				return {
-					status: 406,
-					message: "error - email already taken",
-					data: null,
-				};
-			} else {
+			if (validEmail[0] && validEmail[0][0] && validEmail[0][0].count === "0") {
 				const signed = await CustomerM.create(params);
 				if (signed) {
 					return {
@@ -58,10 +47,15 @@ export const Customer = {
 						data: signed,
 					};
 				}
+			} else {
+				return {
+					status: 406,
+					message: "error - email already taken",
+					data: null,
+				};
 			}
 		} catch (error) {
-			logger.error(error);
-			throw new CustomError("Rosemary", error.message);
+			throw new Error(error);
 		}
 	},
 };
