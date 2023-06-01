@@ -19,17 +19,30 @@ rosemaryRouter.post("/api/rosemary/sign-up", async (ctx, next) => {
 			token: result.token,
 		};
 	} catch (error) {
+		const errorMessage = `${error.name}: ${error.message}: ${error.stack}`;
+		logger.error(errorMessage);
 		ctx.response.status = 500;
-		ctx.response.body = error;
-		logger.error(error);
+		ctx.response.body = errorMessage;
 	}
 	await next();
 });
 
-rosemaryRouter.post("/api/rosemary/login", async (ctx) => {
+rosemaryRouter.post("/api/rosemary/login", async (ctx, next) => {
 	try {
-		CustomerC.logIn(ctx.request.body);
+		console.log("router params", ctx.request.body);
+		const result = await CustomerC.logIn(ctx.request.body);
+		console.log("result", result);
+		ctx.response.status = result.status;
+		ctx.response.body = {
+			status: result.message,
+			data: result.data,
+			token: result.token,
+		};
 	} catch (error) {
-		logger.error(error);
+		const errorMessage = `${error.name}: ${error.message}: ${error.stack}`;
+		logger.error(errorMessage);
+		ctx.response.status = 500;
+		ctx.response.body = errorMessage;
 	}
+	await next();
 });
