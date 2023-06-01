@@ -57,7 +57,6 @@ export const customer = {
 				userParams.status = "regular";
 
 				const userData = await CustomerS.signUp(userParams);
-				console.log("userData", userData);
 
 				if (userData.status === 201) {
 					userData.data = customer.deleteSecretKeys(userData.data);
@@ -92,7 +91,6 @@ export const customer = {
 				};
 			} else {
 				const verified = await bcryptCompare(params.password, password);
-				console.log("verified", verified);
 				const token = verified ? await customer.getJwtToken({ email: params.email, status: 200 }) : null;
 				return {
 					status: verified ? 200 : 401,
@@ -101,6 +99,14 @@ export const customer = {
 					token: verified ? token : null,
 				};
 			}
+		} catch (error) {
+			throw new Error(error);
+		}
+	},
+
+	verifyToken: async (token) => {
+		try {
+			return await jwtVerify(token, jwtSecret);
 		} catch (error) {
 			throw new Error(error);
 		}

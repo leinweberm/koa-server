@@ -38,7 +38,6 @@ export const customer = {
 				WHERE deleted IS NULL
 				AND email = '${params.email}'
 			`);
-			console.log("validEmail", validEmail[0][0].count);
 			if (validEmail[0] && validEmail[0][0] && validEmail[0][0].count === "0") {
 				const signed = await CustomerM.create(params);
 				if (signed) {
