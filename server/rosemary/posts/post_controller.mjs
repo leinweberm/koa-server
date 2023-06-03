@@ -5,7 +5,9 @@ export const post = {
 
 	get: async (params) => {},
 
-	create: async (params) => {},
+	create: async (params) => {
+		return await PostS.create(params);
+	},
 
 	save: async (params) => {},
 

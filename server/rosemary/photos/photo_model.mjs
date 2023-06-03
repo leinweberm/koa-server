@@ -2,10 +2,10 @@ import { DataTypes } from "sequelize";
 
 import { sequelize } from "../../pgdb.mjs";
 
-export const Post = sequelize.define(
-	"posts",
+export const Photo = sequelize.define(
+	"photos",
 	{
-		post_uuid: {
+		photos_uuid: {
 			type: DataTypes.UUID,
 			defaultValue: DataTypes.UUIDV4,
 			allowNull: false,
@@ -21,15 +21,15 @@ export const Post = sequelize.define(
 			defaultValue: null,
 			allowNull: true,
 		},
-		post_title: {
+		photo_title: {
 			type: DataTypes.JSONB,
 			defaultValue: '{"en":"", "cs":""}',
-			allowNull: false,
+			allowNull: true,
 		},
-		photos_description: {
+		photo_description: {
 			type: DataTypes.JSONB,
 			defaultValue: '{"en":"", "cs":""}',
-			allowNull: false,
+			allowNull: true,
 		},
 		data: {
 			type: DataTypes.JSONB,
@@ -38,13 +38,13 @@ export const Post = sequelize.define(
 		},
 	},
 	{
-		tableName: "posts",
+		tableName: "photos",
 		schema: "rosemary",
 		createdAt: "created",
 		updatedAt: false,
 		hooks: {
 			afterSync: () => {
-				const query = `ALTER TABLE rosemary.posts OWNER TO mladmin;`;
+				const query = `ALTER TABLE rosemary.photos OWNER TO mladmin;`;
 				sequelize.query(query);
 			},
 		},

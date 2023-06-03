@@ -12,27 +12,27 @@ export const Customer = sequelize.define(
 			primaryKey: true,
 		},
 		name: {
-			type: DataTypes.STRING,
+			type: DataTypes.TEXT,
 			defaultValue: null,
 			allowNull: true,
 		},
 		address: {
-			type: DataTypes.STRING,
+			type: DataTypes.TEXT,
 			defaultValue: null,
 			allowNull: true,
 		},
 		email: {
-			type: DataTypes.STRING,
+			type: DataTypes.TEXT,
 			allowNull: false,
 			unique: true,
 		},
 		phone: {
-			type: DataTypes.STRING,
+			type: DataTypes.TEXT,
 			defaultValue: null,
 			allowNull: true,
 		},
 		password: {
-			type: DataTypes.STRING,
+			type: DataTypes.TEXT,
 			allowNull: false,
 		},
 		created: {
@@ -46,7 +46,7 @@ export const Customer = sequelize.define(
 			allowNull: true,
 		},
 		status: {
-			type: DataTypes.STRING,
+			type: DataTypes.TEXT,
 			defaultValue: "regular",
 			allowNull: false,
 		},
@@ -61,5 +61,11 @@ export const Customer = sequelize.define(
 		schema: "rosemary",
 		createdAt: "created",
 		updatedAt: false,
+		hooks: {
+			afterSync: () => {
+				const query = `ALTER TABLE rosemary.customers OWNER TO mladmin;`;
+				sequelize.query(query);
+			},
+		},
 	}
 );

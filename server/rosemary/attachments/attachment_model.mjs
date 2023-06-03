@@ -2,10 +2,10 @@ import { DataTypes } from "sequelize";
 
 import { sequelize } from "../../pgdb.mjs";
 
-export const Post = sequelize.define(
-	"posts",
+export const Attachment = sequelize.define(
+	"attachments",
 	{
-		post_uuid: {
+		attachment_uuid: {
 			type: DataTypes.UUID,
 			defaultValue: DataTypes.UUIDV4,
 			allowNull: false,
@@ -21,30 +21,35 @@ export const Post = sequelize.define(
 			defaultValue: null,
 			allowNull: true,
 		},
-		post_title: {
-			type: DataTypes.JSONB,
-			defaultValue: '{"en":"", "cs":""}',
+		name: {
+			type: DataTypes.TEXT,
 			allowNull: false,
 		},
-		photos_description: {
-			type: DataTypes.JSONB,
-			defaultValue: '{"en":"", "cs":""}',
+		temp_name: {
+			type: DataTypes.TEXT,
 			allowNull: false,
 		},
-		data: {
-			type: DataTypes.JSONB,
-			defaultValue: null,
-			allowNull: true,
+		path: {
+			type: DataTypes.TEXT,
+			allowNull: false,
+		},
+		size: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+		},
+		mime_type: {
+			type: DataTypes.TEXT,
+			allowNull: false,
 		},
 	},
 	{
-		tableName: "posts",
+		tableName: "attachments",
 		schema: "rosemary",
 		createdAt: "created",
 		updatedAt: false,
 		hooks: {
 			afterSync: () => {
-				const query = `ALTER TABLE rosemary.posts OWNER TO mladmin;`;
+				const query = `ALTER TABLE rosemary.attachments OWNER TO mladmin;`;
 				sequelize.query(query);
 			},
 		},
