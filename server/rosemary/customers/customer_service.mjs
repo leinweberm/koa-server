@@ -10,7 +10,8 @@ export const customer = {
 					deleted: null,
 				},
 			});
-			return userInfo.toJSON();
+			const result = userInfo.toJSON();
+			return result;
 		} catch (error) {
 			throw new Error(error);
 		}

@@ -16,7 +16,6 @@ export const createPgClient = () => {
 	try {
 		pgPool.connect((err) => {
 			if (err) {
-				console.log("error", err);
 				throw new Error("pgPool: connection error", err);
 			} else {
 				logger.info("pgPool: Connection established");

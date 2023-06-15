@@ -1,7 +1,9 @@
 import dotenv from "dotenv";
 import Koa from "koa";
 import cors from "@koa/cors";
-import { koaBody } from "koa-body";
+import koaBody from "koa-body";
+import path from "node:path";
+import { fileURLToPath } from "url";
 
 import { logger } from "./server/logger.mjs";
 import { mainRouter } from "./server/routers/mainRouter.mjs";
@@ -23,7 +25,26 @@ try {
 }
 
 // body parser
-// app.use(koaBody({ multipart: true }));
+const currentModuleUrl = import.meta.url;
+const currentModulePath = fileURLToPath(currentModuleUrl);
+const currentDirectoryPath = path.dirname(currentModulePath) + "/server/files";
+
+app.use(
+	koaBody({
+		multipart: true,
+		formidable: {
+			maxFileSize: 200 * 1024 * 1024,
+			uploadDir: currentDirectoryPath,
+			onFileBegin: (name, file) => {
+				console.log(`File ${name} uploading:`, file.name);
+			},
+		},
+		onError: (error, ctx) => {
+			console.log("Error:", error);
+			ctx.throw(400, "Bad Request");
+		},
+	})
+);
 
 // cross origin access
 app.use(

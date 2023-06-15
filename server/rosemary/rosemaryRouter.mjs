@@ -1,7 +1,6 @@
 import Router from "koa-router";
-import { koaBody } from "koa-body";
 
-import { errorHandlingMiddleware, jwtTokenMiddleware, parseRequestBody } from "./rosemaryMiddleware.mjs";
+import { errorHandlingMiddleware, jwtTokenMiddleware } from "./rosemaryMiddleware.mjs";
 import { attachment as AttachmentC } from "./attachments/attachment_controller.mjs";
 import { customer as CustomerC } from "./customers/customer_controller.mjs";
 import { order as OrderC } from "./orders/order_controller.mjs";
@@ -37,14 +36,8 @@ rosemaryRouter.post("/api/rosemary/login", async (ctx, next) => {
 	await next();
 });
 
-rosemaryRouter.get("/api/rosemary/test-middleware", jwtTokenMiddleware, (ctx, next) => {
-	ctx.response.status = 200;
-	ctx.response.body = "Toto je testovaci middleware result";
-});
-
 // BLOG POSTS ROUTES
 rosemaryRouter.get("/api/rosematy/get-blog-posts", async (ctx, next) => {
-	console.log("request query", ctx.request.query);
 	const result = await PostC.find(ctx.request.query);
 	ctx.response.status = result.status;
 	ctx.response.body = {
@@ -54,19 +47,22 @@ rosemaryRouter.get("/api/rosematy/get-blog-posts", async (ctx, next) => {
 	await next();
 });
 
-rosemaryRouter.post("/api/rosemary/create-post", koaBody({ multipart: true }), async (ctx, next) => {
-	parseRequestBody(ctx);
-	console.log("create post", ctx.request.body);
-	console.log("body", ctx.body);
-
-	const { files } = ctx.request.body;
-	console.log("files", files);
-
-	ctx.response.status = 200;
-	ctx.response.body = {
-		status: "success",
-		data: { status: "ok" },
-	};
+rosemaryRouter.post("/api/rosemary/create-post", async (ctx, next) => {
+	console.log("CTX", ctx.request.body);
+	const verification = await jwtTokenMiddleware(ctx.request.body.fields.token, "admin");
+	if (!verification) {
+		ctx.response.status = 401;
+		ctx.response.body = {
+			status: "Error - Unathorized access",
+			data: null,
+		};
+	} else {
+		ctx.response.status = 200;
+		ctx.response.body = {
+			status: "success",
+			data: { status: "ok" },
+		};
+	}
 	await next();
 });
 

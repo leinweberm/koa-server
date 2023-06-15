@@ -21,7 +21,7 @@ export const customer = {
 			const token = await jwtSign(
 				{
 					email: params.email,
-					role: params.status,
+					status: params.status,
 					expiresIn: "24h",
 				},
 				jwtSecret,
@@ -78,8 +78,7 @@ export const customer = {
 			if (!params || !params.email || !params.password) {
 				throw new CustomError("Rosemary", "Missing required credentials");
 			}
-
-			const { password } = await CustomerS.login(params.email);
+			const { password, status } = await CustomerS.login(params.email);
 
 			if (!password) {
 				logger.error("Password for user not found");
@@ -91,7 +90,7 @@ export const customer = {
 				};
 			} else {
 				const verified = await bcryptCompare(params.password, password);
-				const token = verified ? await customer.getJwtToken({ email: params.email, status: 200 }) : null;
+				const token = verified ? await customer.getJwtToken({ email: params.email, status: 200, status: status }) : null;
 				return {
 					status: verified ? 200 : 401,
 					message: verified ? "success" : "error",
@@ -106,7 +105,8 @@ export const customer = {
 
 	verifyToken: async (token) => {
 		try {
-			return await jwtVerify(token, jwtSecret);
+			const tokenVerification = await jwtVerify(token, jwtSecret);
+			return tokenVerification;
 		} catch (error) {
 			throw new Error(error);
 		}

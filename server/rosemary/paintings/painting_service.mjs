@@ -39,8 +39,6 @@ export const painting = {
 	find: async (data, filter) => {
 		try {
 			const [rows, count] = await PaintingM.findAndCountAll();
-			console.log("rows", rows);
-			console.log("count", count);
 		} catch (error) {
 			throw new Error(error);
 		}
@@ -54,8 +52,6 @@ export const painting = {
 				defaults: { ...parsedParams },
 			};
 			const [user, created] = await PaintingM.findCreateFind(queryParams);
-			console.log("user", user);
-			console.log("created", created);
 			return {
 				status: created ? 201 : 409,
 				message: created ? "success" : "error",
@@ -74,8 +70,6 @@ export const painting = {
 				defaults: { ...parsedParams },
 			};
 			const [count, rows] = await PaintingM.update(queryParams);
-			console.log("count", count);
-			console.log("rows", rows);
 			return { status: "ok" };
 		} catch (error) {
 			throw new Error(error);
@@ -88,8 +82,6 @@ export const painting = {
 				painting_uuid: paintingUid,
 				deleted: sequelize.fn("NOW"),
 			});
-			console.log("instance", instance);
-			console.log("created", created);
 			return { status: "ok" };
 		} catch (error) {
 			throw new Error(error);

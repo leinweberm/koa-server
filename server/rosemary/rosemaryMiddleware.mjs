@@ -13,26 +13,12 @@ export const errorHandlingMiddleware = async (ctx, next) => {
 	}
 };
 
-export const jwtTokenMiddleware = async (ctx, next) => {
-	const queryToken = ctx.request.query.token;
-	const paramsToken = ctx.request.params.token;
-	const token = queryToken || paramsToken;
-
+export const jwtTokenMiddleware = async (ctxToken, requiredStatus) => {
+	const token = ctxToken;
 	if (!token) {
-		ctx.response.status = 401;
-		ctx.response.body = {
-			status: "error - unauthenticated user",
-			data: null,
-			token: null,
-		};
-		return;
+		return false;
 	} else {
-		await CustomerC.verifyToken(token);
+		const result = await CustomerC.verifyToken(token);
+		return result.status === requiredStatus && result.exp > 0;
 	}
-
-	await next();
-};
-
-export const parseRequestBody = async (ctx) => {
-	ctx.body = ctx.request.body;
 };

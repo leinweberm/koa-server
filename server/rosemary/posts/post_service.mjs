@@ -24,11 +24,9 @@ export const post = {
 	},
 
 	find: async (params) => {
-		console.log("service find params", params);
 		try {
 			const findParams = post.prepareQueryParams(params);
 			const result = PostM.findAndCountAll(findParams);
-			console.log("find query result", result.toJSON());
 			return {
 				status: 200,
 				message: "success - blog post fetched",
@@ -43,7 +41,6 @@ export const post = {
 
 	create: async (params) => {
 		try {
-			console.log("params", params);
 			return {
 				status: 200,
 				message: "success",
