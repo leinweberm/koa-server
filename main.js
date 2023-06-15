@@ -23,7 +23,7 @@ try {
 }
 
 // body parser
-app.use(koaBody());
+// app.use(koaBody({ multipart: true }));
 
 // cross origin access
 app.use(

@@ -26,7 +26,7 @@ export const Post = sequelize.define(
 			defaultValue: '{"en":"", "cs":""}',
 			allowNull: false,
 		},
-		photos_description: {
+		post_description: {
 			type: DataTypes.JSONB,
 			defaultValue: '{"en":"", "cs":""}',
 			allowNull: false,

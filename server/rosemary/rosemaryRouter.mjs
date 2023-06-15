@@ -1,6 +1,7 @@
 import Router from "koa-router";
+import { koaBody } from "koa-body";
 
-import { errorHandlingMiddleware, jwtTokenMiddleware } from "./rosemaryMiddleware.mjs";
+import { errorHandlingMiddleware, jwtTokenMiddleware, parseRequestBody } from "./rosemaryMiddleware.mjs";
 import { attachment as AttachmentC } from "./attachments/attachment_controller.mjs";
 import { customer as CustomerC } from "./customers/customer_controller.mjs";
 import { order as OrderC } from "./orders/order_controller.mjs";
@@ -49,6 +50,22 @@ rosemaryRouter.get("/api/rosematy/get-blog-posts", async (ctx, next) => {
 	ctx.response.body = {
 		status: result.message,
 		data: result.data,
+	};
+	await next();
+});
+
+rosemaryRouter.post("/api/rosemary/create-post", koaBody({ multipart: true }), async (ctx, next) => {
+	parseRequestBody(ctx);
+	console.log("create post", ctx.request.body);
+	console.log("body", ctx.body);
+
+	const { files } = ctx.request.body;
+	console.log("files", files);
+
+	ctx.response.status = 200;
+	ctx.response.body = {
+		status: "success",
+		data: { status: "ok" },
 	};
 	await next();
 });

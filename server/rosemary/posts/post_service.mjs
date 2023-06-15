@@ -39,15 +39,16 @@ export const post = {
 		}
 	},
 
-	get: async (params) => {
-		try {
-		} catch (error) {
-			throw new Error(error);
-		}
-	},
+	get: async (params) => {},
 
 	create: async (params) => {
 		try {
+			console.log("params", params);
+			return {
+				status: 200,
+				message: "success",
+				data: { status: "ok" },
+			};
 		} catch (error) {
 			throw new Error(error);
 		}

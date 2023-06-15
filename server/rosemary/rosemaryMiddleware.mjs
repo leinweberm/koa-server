@@ -32,3 +32,7 @@ export const jwtTokenMiddleware = async (ctx, next) => {
 
 	await next();
 };
+
+export const parseRequestBody = async (ctx) => {
+	ctx.body = ctx.request.body;
+};
